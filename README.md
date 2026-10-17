@@ -1,4 +1,4 @@
-# SeamTreacker
+# SteamTreacker
 
 ASP.NET Core 8 Web API: Steam profile + CS2 inventory valuation.
 Prices: Steam Community Market and DMarket (no CSFloat).
