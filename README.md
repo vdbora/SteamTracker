@@ -1,7 +1,7 @@
 # SteamTreacker
 
 ASP.NET Core 8 Web API: Steam profile + CS2 inventory valuation.
-Prices: Steam Community Market and DMarket (no CSFloat).
+Prices: Steam Community Market and DMarket.
 
 ## Run
 1. `docker compose up -d`  (MySQL on :3306)
