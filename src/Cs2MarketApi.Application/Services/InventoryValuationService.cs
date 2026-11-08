@@ -9,7 +9,7 @@ public class InventoryValuationService(IInventoryProvider inventoryProvider, IPr
     {
         var inventory = await inventoryProvider.GetInventoryAsync(steamId, ct);
 
-        // only marketable items have a market price (cases, skins, stickers...)
+        // only marketable items have a market price 
         var groups = inventory
             .Where(i => i.Marketable && !string.IsNullOrWhiteSpace(i.MarketHashName))
             .GroupBy(i => i.MarketHashName)

@@ -11,8 +11,11 @@ public class SteamOptions
 
 public class DMarketOptions
 {
-    
     public string GameId { get; set; } = "a8db";
+    public string PublicKey { get; set; } = "";
+    public string SecretKey { get; set; } = "";
+
+    public decimal PriceDivisor { get; set; } = 1;
 }
 
 public class PriceRefreshOptions

@@ -4,6 +4,6 @@ namespace Cs2MarketApi.Application.Interfaces;
 
 public interface IInventoryProvider
 {
-    /// <summary>Returns the CS2 inventory (appid 730, context 2).</summary>
+    // Returns the CS2 inventory for the given Steam ID
     Task<IReadOnlyList<InventoryItem>> GetInventoryAsync(string steamId, CancellationToken ct = default);
 }

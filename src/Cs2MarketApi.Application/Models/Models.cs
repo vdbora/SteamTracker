@@ -20,15 +20,15 @@ public record ValuedItem(
     string Name,
     string IconUrl,
     int Quantity,
-    Dictionary<string, decimal> Prices,   // source -> unit price
-    decimal? BestPrice,                   // lowest known unit price
-    decimal TotalValue);                  // BestPrice * Quantity
+    Dictionary<string, decimal> Prices,   
+    decimal? BestPrice,                   
+    decimal TotalValue);                  
 
 public record InventoryValuation(
     string SteamId,
     int TotalItems,
     int PricedItems,
-    int PendingItems,                     // no price yet, background worker will fetch it
+    int PendingItems,                     
     decimal TotalValue,
     Dictionary<string, decimal> TotalBySource,
     IReadOnlyList<ValuedItem> TopItems,
