@@ -17,6 +17,7 @@ public static class DependencyInjection
     {
         services.Configure<SteamOptions>(config.GetSection("Steam"));
         services.Configure<DMarketOptions>(config.GetSection("DMarket"));
+        services.Configure<ItadOptions>(config.GetSection("Itad"));
         services.Configure<PriceRefreshOptions>(config.GetSection("PriceRefresh"));
 
         var connectionString = config.GetConnectionString("Default")
@@ -53,12 +54,36 @@ public static class DependencyInjection
             c.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
         });
 
-        // every price source is registered as IPriceProvider
+        // every price source is registered as IPriceProvider -> add a new market = add one line here
         services.AddTransient<IPriceProvider>(sp => sp.GetRequiredService<SteamMarketPriceProvider>());
         services.AddTransient<IPriceProvider>(sp => sp.GetRequiredService<DMarketPriceProvider>());
 
         services.AddScoped<IPriceStore, EfPriceStore>();
         services.AddHostedService<PriceRefreshWorker>();
+
+        // ---- games ----
+        services.AddHttpClient<IOwnedGamesProvider, SteamOwnedGamesProvider>(c =>
+        {
+            c.BaseAddress = new Uri("https://api.steampowered.com/");
+            c.Timeout = TimeSpan.FromSeconds(30);
+        });
+
+        services.AddHttpClient<IGamePriceProvider, SteamStorePriceProvider>(c =>
+        {
+            c.BaseAddress = new Uri("https://store.steampowered.com/");
+            c.Timeout = TimeSpan.FromSeconds(30);
+            c.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
+        });
+
+        services.AddHttpClient<IGameHistoryProvider, ItadHistoryProvider>(c =>
+        {
+            c.BaseAddress = new Uri("https://api.isthereanydeal.com/");
+            c.Timeout = TimeSpan.FromSeconds(30);
+            c.DefaultRequestHeaders.UserAgent.ParseAdd(UserAgent);
+        });
+
+        services.AddScoped<IGamePriceStore, EfGamePriceStore>();
+        services.AddScoped<IGameHistoryStore, EfGameHistoryStore>();
 
         return services;
     }

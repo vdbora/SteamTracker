@@ -13,9 +13,14 @@ builder.Services.AddSwaggerGen();
 
 builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddScoped<InventoryValuationService>();
+builder.Services.AddScoped<GameLibraryValuationService>();
 
 var origins = builder.Configuration.GetSection("Cors:Origins").Get<string[]>() ?? [];
-builder.Services.AddCors(o => o.AddDefaultPolicy(p => p.WithOrigins(origins).AllowAnyHeader().AllowAnyMethod()));
+builder.Services.AddCors(o => o.AddDefaultPolicy(p => p
+    .WithOrigins(origins)
+    .AllowAnyHeader()
+    .AllowAnyMethod()
+    .AllowCredentials()));
 
 var app = builder.Build();
 
@@ -44,6 +49,7 @@ app.UseExceptionHandler(errors => errors.Run(async ctx =>
         SteamNotFoundException => (404, "Steam user not found"),
         InventoryPrivateException => (403, "Inventory is private"),
         ExternalServiceException => (502, "External service error"),
+        GamesPrivateException => (403, "Game details are private"),
         _ => (500, "Unexpected error")
     };
 
